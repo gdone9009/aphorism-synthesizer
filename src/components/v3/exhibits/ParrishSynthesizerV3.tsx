@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { generateInterpolatedText, generatePhoneticGrid } from '../../../services/geminiService';
+import { generatePhoneticGrid } from '../../../services/geminiService';
 import { audioSynth } from '../../../services/audioSynth';
 import type { LatentSynthesisResult } from '../../../types';
 import { Compass, Move, Sparkles } from 'lucide-react';
@@ -12,7 +12,7 @@ export const ParrishSynthesizerV3: React.FC = () => {
     right: '파도',
   });
 
-  const [latentPos, setLatentPos] = useState({ x: 0.5, y: 0.5 }); // Normalized 0..1 coordinates
+  const [latentPos, setLatentPos] = useState({ x: 0.5, y: 0.5 });
   const [latentGrid, setLatentGrid] = useState<LatentSynthesisResult | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
     handleSynthesize();
   }, []);
 
-  // Canvas Drag & Vector Coordinate Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -50,7 +49,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
       ctx.fillStyle = '#fbfaf5';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Gridlines
       ctx.strokeStyle = '#e7e5e4';
       ctx.lineWidth = 1;
 
@@ -67,7 +65,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
         ctx.stroke();
       }
 
-      // Crosshair center lines
       ctx.strokeStyle = '#a8a29e';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
@@ -77,7 +74,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
       ctx.lineTo(canvas.width, canvas.height / 2);
       ctx.stroke();
 
-      // Anchors Text
       ctx.font = 'bold 13px "Crimson Pro", serif';
       ctx.fillStyle = '#1c1917';
       ctx.textAlign = 'center';
@@ -89,11 +85,9 @@ export const ParrishSynthesizerV3: React.FC = () => {
       ctx.textAlign = 'right';
       ctx.fillText(`RIGHT: ${anchors.right}`, canvas.width - 15, canvas.height / 2);
 
-      // Draggable Vector Point
       const px = latentPos.x * canvas.width;
       const py = latentPos.y * canvas.height;
 
-      // Draw Connection Lines to Anchors
       ctx.strokeStyle = 'rgba(220, 38, 38, 0.4)';
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -104,7 +98,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Draw Latent Vector Node
       ctx.beginPath();
       ctx.arc(px, py, 14, 0, Math.PI * 2);
       ctx.fillStyle = '#dc2626';
@@ -113,7 +106,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      // Vector Label
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.fillStyle = '#dc2626';
       ctx.textAlign = 'center';
@@ -163,7 +155,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
         </span>
       </div>
 
-      {/* 4 Anchor Inputs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {(['top', 'bottom', 'left', 'right'] as const).map((dir) => (
           <div key={dir}>
@@ -180,7 +171,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
         ))}
       </div>
 
-      {/* Interactive Canvas */}
       <div className="bg-white border-2 border-stone-900 rounded p-2 shadow-2xl relative">
         <canvas
           ref={canvasRef}
@@ -194,7 +184,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
         </div>
       </div>
 
-      {/* Synthesize Button */}
       <button
         onClick={handleSynthesize}
         disabled={loading}
@@ -204,7 +193,6 @@ export const ParrishSynthesizerV3: React.FC = () => {
         {loading ? '벡터 잠재 공간 보간 산출 중...' : '벡터 잠재 공간 조어 합성 (Synthesize Phonetic Neologisms)'}
       </button>
 
-      {/* Latent Neologisms Display */}
       {latentGrid && (
         <div className="bg-white border-2 border-blue-900 p-6 rounded shadow-xl font-mono space-y-4 animate-fade-in">
           <div className="flex justify-between items-center border-b border-stone-200 pb-2 text-xs font-bold text-blue-900">

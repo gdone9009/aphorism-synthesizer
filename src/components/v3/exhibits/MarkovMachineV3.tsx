@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Shuffle, Network } from 'lucide-react';
+import { Play, Network } from 'lucide-react';
 import { audioSynth } from '../../../services/audioSynth';
 
 const DEFAULT_CORPUS_V3 = `어느 날 온 몸이 황금빛인 고양이를 보았다.
@@ -38,7 +38,6 @@ export const MarkovMachineV3: React.FC = () => {
       matrix[key][nextWord] = (matrix[key][nextWord] || 0) + 1;
     }
 
-    // Build Graph Nodes for 2D Canvas
     const keys = Object.keys(matrix);
     const canvas = canvasRef.current;
     const width = canvas?.width || 650;
@@ -59,18 +58,19 @@ export const MarkovMachineV3: React.FC = () => {
 
     nodesRef.current = graphNodes;
 
-    // Generate random walk text
     if (keys.length > 0) {
-      let current = keys[Math.floor(Math.random() * keys.length)];
+      const current = keys[Math.floor(Math.random() * keys.length)];
+      setActiveNode(current);
       const result = [current];
 
+      let temp = current;
       for (let i = 0; i < 20; i++) {
-        const nexts = matrix[current];
+        const nexts = matrix[temp];
         if (!nexts) break;
         const options = Object.keys(nexts);
         const chosen = options[Math.floor(Math.random() * options.length)];
         result.push(chosen);
-        current = chosen;
+        temp = chosen;
       }
       setGeneratedText(result.join(' '));
     }
@@ -80,7 +80,6 @@ export const MarkovMachineV3: React.FC = () => {
     buildGraphAndMatrix();
   }, [nGram]);
 
-  // Canvas Graph Physics Loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -96,7 +95,6 @@ export const MarkovMachineV3: React.FC = () => {
 
       const nodes = nodesRef.current;
 
-      // Draw Edges / Connections
       nodes.forEach((node) => {
         Object.entries(node.connections).forEach(([targetId, weight]) => {
           const targetNode = nodes.find(n => n.id === targetId);
@@ -111,7 +109,6 @@ export const MarkovMachineV3: React.FC = () => {
         });
       });
 
-      // Draw Nodes
       nodes.forEach((node) => {
         ctx.beginPath();
         ctx.arc(node.x, node.y, 18, 0, Math.PI * 2);
@@ -141,7 +138,6 @@ export const MarkovMachineV3: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Input Corpus */}
         <div>
           <label className="block text-xs font-mono font-bold uppercase text-stone-700 mb-2">
             1. 입력 코퍼스 (Corpus Input)
@@ -168,7 +164,6 @@ export const MarkovMachineV3: React.FC = () => {
           </div>
         </div>
 
-        {/* Generated Stochastic Result */}
         <div>
           <label className="block text-xs font-mono font-bold uppercase text-stone-700 mb-2">
             2. 마르코프 사슬 생성 텍스트 (Stochastic Result)
@@ -193,7 +188,6 @@ export const MarkovMachineV3: React.FC = () => {
         </div>
       </div>
 
-      {/* Live Directed Node Graph Canvas */}
       <div className="bg-white border-2 border-stone-900 p-4 rounded shadow-xl relative overflow-hidden">
         <div className="flex justify-between items-center border-b border-stone-200 pb-2 mb-3">
           <span className="font-mono text-xs font-bold text-stone-900 uppercase flex items-center gap-1.5">

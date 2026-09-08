@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Header } from './components/Header';
 import { ApiKeyModal } from './components/ApiKeyModal';
-import { AphorismSynthesizerApp } from './components/AphorismSynthesizerApp';
-import { getStoredApiKey } from './services/geminiService';
-import { Sparkles, BookOpen, ExternalLink } from 'lucide-react';
-
-// V1 / Museum components for fallback view
 import { TimelineMainHall, EXHIBITS_DATA } from './components/TimelineMainHall';
 import { ExhibitWrapper } from './components/ExhibitWrapper';
+import type { EpochCategory, MachineId } from './types';
+import { getStoredApiKey } from './services/geminiService';
+
+// V1 Exhibits
 import { MarkovMachine } from './components/exhibits/MarkovMachine';
 import { DahlGrammatizator } from './components/exhibits/DahlGrammatizator';
 import { CalvinoStoryMachine } from './components/exhibits/CalvinoStoryMachine';
@@ -16,16 +16,47 @@ import { BarakaScriber } from './components/exhibits/BarakaScriber';
 import { ParrishSynthesizer } from './components/exhibits/ParrishSynthesizer';
 import { KineticBreath } from './components/exhibits/KineticBreath';
 import { OhSentenceBaduk } from './components/exhibits/OhSentenceBaduk';
-import type { EpochCategory, MachineId } from './types';
+
+// V2 Components
+import { HeaderV2 } from './components/v2/HeaderV2';
+import { MainHallV2 } from './components/v2/MainHallV2';
+import { ExhibitWrapperV2 } from './components/v2/ExhibitWrapperV2';
+import { DahlGrammatizatorV2 } from './components/v2/exhibits/DahlGrammatizatorV2';
+import { CalvinoStoryMachineV2 } from './components/v2/exhibits/CalvinoStoryMachineV2';
+import { BorgesLibraryV2 } from './components/v2/exhibits/BorgesLibraryV2';
+import { BarakaScriberV2 } from './components/v2/exhibits/BarakaScriberV2';
+import { ParrishSynthesizerV2 } from './components/v2/exhibits/ParrishSynthesizerV2';
+import { KineticBreathV2 } from './components/v2/exhibits/KineticBreathV2';
+import { OhSentenceBadukV2 } from './components/v2/exhibits/OhSentenceBadukV2';
+import { MarkovMachineV2 } from './components/v2/exhibits/MarkovMachineV2';
+import { BenseArtificialPoetryV2 } from './components/v2/exhibits/BenseArtificialPoetryV2';
+
+// V3 Components (Cybernetic Synthesis Edition)
+import { HeaderV3 } from './components/v3/HeaderV3';
+import { MainHallV3 } from './components/v3/MainHallV3';
+import { ExhibitWrapperV3 } from './components/v3/ExhibitWrapperV3';
+import { SynergyPipelineModal } from './components/v3/SynergyPipelineModal';
+import { ArtifactExporterModal } from './components/v3/ArtifactExporterModal';
+import { MarkovMachineV3 } from './components/v3/exhibits/MarkovMachineV3';
+import { ParrishSynthesizerV3 } from './components/v3/exhibits/ParrishSynthesizerV3';
+import { DahlGrammatizatorV3 } from './components/v3/exhibits/DahlGrammatizatorV3';
+import { CalvinoStoryMachineV3 } from './components/v3/exhibits/CalvinoStoryMachineV3';
+import { BorgesLibraryV3 } from './components/v3/exhibits/BorgesLibraryV3';
+import { BarakaScriberV3 } from './components/v3/exhibits/BarakaScriberV3';
+import { KineticBreathV3 } from './components/v3/exhibits/KineticBreathV3';
+import { OhSentenceBadukV3 } from './components/v3/exhibits/OhSentenceBadukV3';
+import { BenseArtificialPoetryV3 } from './components/v3/exhibits/BenseArtificialPoetryV3';
 
 export function App() {
-  const [mainView, setMainView] = useState<'SYNTHESIZER' | 'MUSEUM'>('SYNTHESIZER');
-  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
-  const [, setHasApiKey] = useState(false);
-
-  // Museum fallback state
+  const [version, setVersion] = useState<'v1' | 'v2' | 'v3'>('v3');
+  const [currentCategory, setCurrentCategory] = useState<EpochCategory | 'MAIN'>('MAIN');
   const [selectedMachineId, setSelectedMachineId] = useState<MachineId | null>(null);
-  const [currentCategory] = useState<EpochCategory | 'MAIN'>('MAIN');
+  
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+  const [isSynergyModalOpen, setIsSynergyModalOpen] = useState(false);
+  const [isExporterModalOpen, setIsExporterModalOpen] = useState(false);
+
+  const [hasApiKey, setHasApiKey] = useState(false);
 
   useEffect(() => {
     setHasApiKey(!!getStoredApiKey());
@@ -37,7 +68,7 @@ export function App() {
 
   const selectedExhibit = EXHIBITS_DATA.find(e => e.id === selectedMachineId);
 
-  const renderMuseumContent = () => {
+  const renderV1Content = () => {
     switch (selectedMachineId) {
       case 'MARKOV': return <MarkovMachine />;
       case 'DAHL_PEDAL': return <DahlGrammatizator />;
@@ -52,106 +83,149 @@ export function App() {
     }
   };
 
+  const renderV2Content = () => {
+    switch (selectedMachineId) {
+      case 'MARKOV': return <MarkovMachineV2 />;
+      case 'DAHL_PEDAL': return <DahlGrammatizatorV2 />;
+      case 'CALVINO_MACHINE': return <CalvinoStoryMachineV2 />;
+      case 'BORGES_LIBRARY': return <BorgesLibraryV2 />;
+      case 'MAX_BENSE': return <BenseArtificialPoetryV2 />;
+      case 'EXPRESSION_SCRIBER': return <BarakaScriberV2 />;
+      case 'PARRISH_SYNTHESIZER': return <ParrishSynthesizerV2 />;
+      case 'KINETIC_BREATH': return <KineticBreathV2 />;
+      case 'SENTENCE_GO': return <OhSentenceBadukV2 />;
+      default: return null;
+    }
+  };
+
+  const renderV3Content = () => {
+    switch (selectedMachineId) {
+      case 'MARKOV': return <MarkovMachineV3 />;
+      case 'DAHL_PEDAL': return <DahlGrammatizatorV3 />;
+      case 'CALVINO_MACHINE': return <CalvinoStoryMachineV3 />;
+      case 'BORGES_LIBRARY': return <BorgesLibraryV3 />;
+      case 'MAX_BENSE': return <BenseArtificialPoetryV3 />;
+      case 'EXPRESSION_SCRIBER': return <BarakaScriberV3 />;
+      case 'PARRISH_SYNTHESIZER': return <ParrishSynthesizerV3 />;
+      case 'KINETIC_BREATH': return <KineticBreathV3 />;
+      case 'SENTENCE_GO': return <OhSentenceBadukV3 />;
+      default: return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#fbfaf5] text-stone-900 flex flex-col font-serif">
-      {/* Global Top Navbar */}
-      <header className="border-b-2 border-stone-800 bg-stone-900 text-stone-100 py-3 px-4 md:px-8 shadow-md">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-amber-400 text-stone-950 flex items-center justify-center font-bold font-mono text-sm">
-              AS
-            </div>
-            <div>
-              <h1 className="font-bold text-sm md:text-base tracking-tight text-amber-100 font-mono">
-                합성 명언 생성기 <span className="text-xs text-amber-400 font-normal">Aphorism Synthesizer</span>
-              </h1>
-              <p className="text-[10px] text-stone-400 font-mono">
-                GOOGLE GEMINI API INTEGRATED • 160 MATERIALS
-              </p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#fcfbf7] text-stone-900 flex flex-col font-serif selection:bg-red-200 jacquard-pattern">
+      {/* Header selon version */}
+      {version === 'v3' ? (
+        <HeaderV3
+          currentCategory={currentCategory}
+          onSelectCategory={(cat) => {
+            setCurrentCategory(cat);
+            setSelectedMachineId(null);
+          }}
+          onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
+          onOpenSynergyModal={() => setIsSynergyModalOpen(true)}
+          onOpenExporterModal={() => setIsExporterModalOpen(true)}
+          hasApiKey={hasApiKey}
+          version={version}
+          onSelectVersion={(v) => setVersion(v)}
+        />
+      ) : version === 'v2' ? (
+        <HeaderV2
+          currentCategory={currentCategory}
+          onSelectCategory={(cat) => {
+            setCurrentCategory(cat);
+            setSelectedMachineId(null);
+          }}
+          onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
+          hasApiKey={hasApiKey}
+          version={version}
+          onToggleVersion={() => setVersion('v3')}
+        />
+      ) : (
+        <Header
+          currentCategory={currentCategory}
+          onSelectCategory={(cat) => {
+            setCurrentCategory(cat);
+            setSelectedMachineId(null);
+          }}
+          onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
+          hasApiKey={hasApiKey}
+        />
+      )}
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setMainView('SYNTHESIZER');
-                setSelectedMachineId(null);
-              }}
-              className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
-                mainView === 'SYNTHESIZER'
-                  ? 'bg-amber-400 text-stone-950 shadow-sm'
-                  : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>명언 합성기</span>
-            </button>
-
-            <button
-              onClick={() => setMainView('MUSEUM')}
-              className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
-                mainView === 'MUSEUM'
-                  ? 'bg-amber-400 text-stone-950 shadow-sm'
-                  : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>내장 박물관 뷰</span>
-            </button>
-
-            <a
-              href="https://gdone9009.github.io/the-museum-of-literary-machines/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1.5 rounded text-xs font-mono font-bold bg-amber-900/80 hover:bg-amber-800 text-amber-200 border border-amber-600 transition-all flex items-center gap-1.5 shadow-xs"
-            >
-              <span>🏛️ 문학기계박물관 바로가기</span>
-              <ExternalLink className="w-3 h-3 text-amber-400" />
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* Main App Area */}
+      {/* Main Content */}
       <main className="flex-1">
-        {mainView === 'SYNTHESIZER' ? (
-          <AphorismSynthesizerApp
-            onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
-          />
+        {version === 'v3' ? (
+          selectedExhibit ? (
+            <ExhibitWrapperV3
+              exhibit={selectedExhibit}
+              onBack={() => setSelectedMachineId(null)}
+            >
+              {renderV3Content()}
+            </ExhibitWrapperV3>
+          ) : (
+            <MainHallV3
+              selectedCategory={currentCategory}
+              onSelectMachine={(id) => setSelectedMachineId(id)}
+            />
+          )
+        ) : version === 'v2' ? (
+          selectedExhibit ? (
+            <ExhibitWrapperV2
+              exhibit={selectedExhibit}
+              onBack={() => setSelectedMachineId(null)}
+            >
+              {renderV2Content()}
+            </ExhibitWrapperV2>
+          ) : (
+            <MainHallV2
+              selectedCategory={currentCategory}
+              onSelectMachine={(id) => setSelectedMachineId(id)}
+            />
+          )
         ) : (
-          <div className="py-6">
-            {selectedExhibit ? (
-              <ExhibitWrapper
-                exhibit={selectedExhibit}
-                onBack={() => setSelectedMachineId(null)}
-              >
-                {renderMuseumContent()}
-              </ExhibitWrapper>
-            ) : (
-              <TimelineMainHall
-                selectedCategory={currentCategory}
-                onSelectMachine={(id) => setSelectedMachineId(id)}
-              />
-            )}
-          </div>
+          selectedExhibit ? (
+            <ExhibitWrapper
+              exhibit={selectedExhibit}
+              onBack={() => setSelectedMachineId(null)}
+            >
+              {renderV1Content()}
+            </ExhibitWrapper>
+          ) : (
+            <TimelineMainHall
+              selectedCategory={currentCategory}
+              onSelectMachine={(id) => setSelectedMachineId(id)}
+            />
+          )
         )}
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-stone-300 py-6 bg-white/80 backdrop-blur-sm text-center text-xs text-stone-600 font-serif mt-12">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2">
-          <p>© 2026 합성 명언 생성기 (Aphorism Synthesizer). Built with React 19, Tailwind CSS & Google Gemini API.</p>
-          <p className="font-mono text-[10px] text-stone-400">
-            GITHUB PAGES READY | GOOGLE_ANTIGRAVITY
+      <footer className="border-t border-stone-300 py-6 bg-white/80 backdrop-blur-sm text-center text-xs text-stone-500 font-serif mt-12">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2">
+          <p>© 2026 The Museum of Literary Machines ({version.toUpperCase()}). Built with React 19, Tailwind CSS & Google Gemini.</p>
+          <p className="mono text-[10px] text-stone-400">
+            CYBERNETIC_SYNTHESIS_MODE: {version.toUpperCase()} | GOOGLE_ANTIGRAVITY
           </p>
         </div>
       </footer>
 
-      {/* API Key Modal */}
+      {/* Modals */}
       <ApiKeyModal
         isOpen={isApiKeyModalOpen}
         onClose={() => setIsApiKeyModalOpen(false)}
         onSave={handleSaveApiKey}
+      />
+
+      <SynergyPipelineModal
+        isOpen={isSynergyModalOpen}
+        onClose={() => setIsSynergyModalOpen(false)}
+      />
+
+      <ArtifactExporterModal
+        isOpen={isExporterModalOpen}
+        onClose={() => setIsExporterModalOpen(false)}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { generateBarakaScriber } from '../../../services/geminiService';
 import { audioSynth } from '../../../services/audioSynth';
-import { Camera, Mic, Activity, Radio } from 'lucide-react';
+import { Camera, Mic, Activity } from 'lucide-react';
 
 export const BarakaScriberV3: React.FC = () => {
   const [textInput, setTextInput] = useState('팔꿈치로 타자기를 내리침, 비명, 거친 숨소리');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { audioSynth } from '../../../services/audioSynth';
-import { Mic, StopCircle, Wind, Radio } from 'lucide-react';
+import { Mic, StopCircle, Wind } from 'lucide-react';
 
 interface Particle {
   text: string;
