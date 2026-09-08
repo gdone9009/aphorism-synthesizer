@@ -21,6 +21,7 @@ export const MarkovMachineV3: React.FC = () => {
   const [generatedText, setGeneratedText] = useState('');
   const [nGram, setNGram] = useState<number>(1);
   const [activeNode, setActiveNode] = useState<string | null>(null);
+  console.log(activeNode);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<GraphNode[]>([]);
