@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { AphorismSynthesizerApp } from './components/AphorismSynthesizerApp';
 import { getStoredApiKey } from './services/geminiService';
-import { Sparkles, BookOpen } from 'lucide-react';
+import { Sparkles, BookOpen, ExternalLink } from 'lucide-react';
 
 // V1 / Museum components for fallback view
 import { TimelineMainHall, EXHIBITS_DATA } from './components/TimelineMainHall';
@@ -96,8 +96,18 @@ export function App() {
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <span>문학 기계 박물관</span>
+              <span>내장 박물관 뷰</span>
             </button>
+
+            <a
+              href="https://gdone9009.github.io/the-museum-of-literary-machines/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 rounded text-xs font-mono font-bold bg-amber-900/80 hover:bg-amber-800 text-amber-200 border border-amber-600 transition-all flex items-center gap-1.5 shadow-xs"
+            >
+              <span>🏛️ 문학기계박물관 바로가기</span>
+              <ExternalLink className="w-3 h-3 text-amber-400" />
+            </a>
           </div>
         </div>
       </header>
