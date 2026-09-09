@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  base: '/the-museum-of-literary-machines/',
+  base: '/aphorism-synthesizer/',
 })
