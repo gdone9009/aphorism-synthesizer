@@ -35,7 +35,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose, onSav
           <Key className="w-6 h-6 text-red-800" />
           <div>
             <h2 className="text-xl font-bold text-stone-900">Google Gemini API Key 설정</h2>
-            <p className="text-xs text-stone-500 font-mono">MODEL: gemini-3-flash-preview</p>
+            <p className="text-xs text-stone-500 font-mono">MODEL: gemini-2.5-flash</p>
           </div>
         </div>
 

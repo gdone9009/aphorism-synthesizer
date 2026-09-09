@@ -40,7 +40,7 @@ export const generateDahlText = async (params: DahlParams): Promise<string> => {
 위 규칙을 조합하여 한국어 소설의 한 장면을 2-3단락으로 작성하십시오.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `주제: ${params.subject || '어느 가을날의 전보'}`,
         config: { systemInstruction: prompt }
       });
@@ -81,7 +81,7 @@ export const generateBorgesPage = async (coords: string, keyword?: string): Prom
         : `좌표 ${coords}의 서고를 발견했습니다. 그곳의 텍스트를 보여주세요.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: input,
         config: { systemInstruction: prompt }
       });
@@ -112,7 +112,7 @@ export const generateArtificialPoetry = async (corpus: string): Promise<string> 
 5. 한국어로 작성하십시오.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `코퍼스 소스: ${corpus}`,
         config: { systemInstruction: prompt }
       });
@@ -148,7 +148,7 @@ export const generateBarakaScriber = async (input: BarakaInput): Promise<string>
       parts.push({ text: '위의 모든 육체적 신호들을 결합하여 하나의 파괴적이고 아름다운 시로 전사하십시오.' });
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: { parts } as unknown as string,
         config: { systemInstruction: prompt }
       });
@@ -177,7 +177,7 @@ export const generateInterpolatedText = async (textA: string, textB: string, rat
 - 두 의미 사이의 '잠재적 공간'에 존재하는 모호하고 보간된(interpolated) 한국어 문장을 생성하세요.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `텍스트 A: ${textA}\n텍스트 B: ${textB}`,
         config: { systemInstruction: prompt }
       });
@@ -203,7 +203,7 @@ Rules:
 2. Return strictly JSON with keys: topLeft, topRight, bottomLeft, bottomRight, center. No markdown wrappers.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `Top: ${top}, Bottom: ${bottom}, Left: ${left}, Right: ${right}`,
         config: {
           systemInstruction: prompt,
@@ -244,7 +244,7 @@ export const generateCalvinoVerbs = async (story: string): Promise<string[]> => 
   if (ai) {
     try {
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `Current Story: "${story}"\nSuggest 5 distinct, creative KOREAN VERBS that could logically or interestingly follow this story.`,
         config: {
           responseMimeType: 'application/json',
@@ -277,7 +277,7 @@ export const generateCalvinoNextSentence = async (story: string, verb: string): 
 - 문체는 우화적이고, 약간은 건조하며, 환상 문학의 톤을 유지하세요. 1~2문장으로 작성하세요.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `Story so far: ${story}\nAction to take: ${verb}`,
         config: { systemInstruction: prompt }
       });
@@ -299,7 +299,7 @@ export const generateCalvinoOverturn = async (story: string): Promise<string> =>
 - "그러나," "갑자기," "하지만," 등의 접속사로 시작하세요.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `Story to overturn: ${story}`,
         config: { systemInstruction: prompt }
       });
@@ -325,7 +325,7 @@ export const generateSentenceBadukResponse = async (history: { role: string; con
 
       const lastUserMsg = history[history.length - 1]?.content || '';
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: lastUserMsg,
         config: { systemInstruction: prompt }
       });
@@ -349,7 +349,7 @@ export const generatePoeticFlint = async (w1: string, w2: string, w3: string): P
 그리고 이 4개의 단어를 모두 사용하여 짧고 강렬한, 인간과 기계 사이의 긴장을 다루는 한국어 산문시를 작성하십시오.`;
 
       const res = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         contents: `Words: ${w1}, ${w2}, ${w3}`,
         config: {
           systemInstruction: prompt,
