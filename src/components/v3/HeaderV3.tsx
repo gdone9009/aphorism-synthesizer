@@ -54,7 +54,16 @@ export const HeaderV3: React.FC<HeaderV3Props> = ({
         {/* Category Navigation & Cybernetic Tools */}
         <div className="flex items-center gap-2 flex-wrap justify-center font-mono text-xs">
           
-          {/* Main Hall Tab */}
+          {/* Cross Link to Aphorism Synthesizer Site */}
+          <a
+            href="https://gdone9009.github.io/aphorism-synthesizer/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 rounded-sm font-mono font-bold bg-amber-400 hover:bg-amber-300 text-stone-950 border border-stone-900 shadow-sm flex items-center gap-1.5 transition-all hover:scale-105"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-stone-900" />
+            <span>🧪 합성 명언 생성기 바로가기</span>
+          </a>
           <button
             onClick={() => onSelectCategory('MAIN')}
             className={`px-3 py-1.5 rounded-sm transition-all font-bold ${
