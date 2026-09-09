@@ -1,6 +1,6 @@
 import React from 'react';
-import { Key, Sparkles, Network, Compass, Download } from 'lucide-react';
-import type { EpochCategory } from '../../types';
+import { Key, Sparkles, Network, Download, Cpu } from 'lucide-react';
+import type { EpochCategory, AppVersion } from '../../types';
 
 interface HeaderV3Props {
   currentCategory: EpochCategory | 'MAIN';
@@ -9,8 +9,8 @@ interface HeaderV3Props {
   onOpenSynergyModal: () => void;
   onOpenExporterModal: () => void;
   hasApiKey: boolean;
-  version: 'v1' | 'v2' | 'v3';
-  onSelectVersion: (v: 'v1' | 'v2' | 'v3') => void;
+  version: AppVersion;
+  onSelectVersion: (v: AppVersion) => void;
 }
 
 export const CATEGORIES_V3 = [
@@ -29,10 +29,44 @@ export const HeaderV3: React.FC<HeaderV3Props> = ({
   version,
   onSelectVersion,
 }) => {
+  const versions: AppVersion[] = ['v1', 'v2', 'v3', 'v4'];
+
   return (
     <header className="bg-[#fcfbf7] border-b-2 border-stone-900 sticky top-0 z-40 shadow-sm backdrop-blur-md bg-opacity-95">
+      {/* Version Selector Bar */}
+      <div className="bg-stone-900 text-stone-200 px-4 py-1.5 flex justify-between items-center text-xs font-mono">
+        <div className="flex items-center gap-2">
+          <span className="text-amber-400 font-bold flex items-center gap-1">
+            <Cpu className="w-3.5 h-3.5" /> SYSTEM_VERSION:
+          </span>
+          <div className="flex bg-stone-950 p-0.5 rounded border border-stone-800">
+            {versions.map((v) => (
+              <button
+                key={v}
+                onClick={() => onSelectVersion(v)}
+                className={`px-2.5 py-0.5 rounded text-[11px] font-bold uppercase transition-all ${
+                  version === v
+                    ? 'bg-amber-400 text-stone-950 shadow'
+                    : 'text-stone-400 hover:text-stone-100 hover:bg-stone-800'
+                }`}
+              >
+                {v} {v === 'v4' && '★ NEW'}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <a
+          href="https://gdone9009.github.io/aphorism-synthesizer/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[11px] font-bold text-amber-300 hover:text-amber-200 flex items-center gap-1 bg-amber-950/80 px-2.5 py-0.5 rounded border border-amber-700/60"
+        >
+          <Sparkles className="w-3 h-3 text-amber-400" /> 🧪 합성 명언 생성기 바로가기 ↗
+        </a>
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
-        
         {/* Title */}
         <div 
           onClick={() => onSelectCategory('MAIN')}
@@ -53,93 +87,44 @@ export const HeaderV3: React.FC<HeaderV3Props> = ({
 
         {/* Category Navigation & Cybernetic Tools */}
         <div className="flex items-center gap-2 flex-wrap justify-center font-mono text-xs">
-          
-          {/* Cross Link to Aphorism Synthesizer Site */}
-          <a
-            href="https://gdone9009.github.io/aphorism-synthesizer/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1.5 rounded-sm font-mono font-bold bg-amber-400 hover:bg-amber-300 text-stone-950 border border-stone-900 shadow-sm flex items-center gap-1.5 transition-all hover:scale-105"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-stone-900" />
-            <span>🧪 합성 명언 생성기 바로가기</span>
-          </a>
           <button
             onClick={() => onSelectCategory('MAIN')}
             className={`px-3 py-1.5 rounded-sm transition-all font-bold ${
               currentCategory === 'MAIN'
-                ? 'bg-stone-950 text-amber-200 shadow'
-                : 'text-stone-700 hover:bg-stone-200'
+                ? 'bg-stone-900 text-amber-200 shadow-sm'
+                : 'bg-stone-200 text-stone-700 hover:bg-stone-300'
             }`}
           >
-            <Compass className="w-3.5 h-3.5 inline-block mr-1" />
-            계보도 (Main Hall)
+            메인 전시관
           </button>
 
-          <div className="w-px h-4 bg-stone-300 mx-1 hidden md:block" />
-
-          {/* Epoch Category Tabs */}
-          {CATEGORIES_V3.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => onSelectCategory(cat.id as EpochCategory)}
-              className={`px-3 py-1.5 rounded-sm transition-all font-bold ${
-                currentCategory === cat.id
-                  ? 'bg-red-900 text-stone-100 shadow'
-                  : 'text-stone-700 hover:bg-stone-200'
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
-
-          <div className="w-px h-4 bg-stone-300 mx-1 hidden md:block" />
-
-          {/* Synergy Pipeline Button */}
           <button
             onClick={onOpenSynergyModal}
-            className="flex items-center gap-1 px-3 py-1.5 bg-indigo-900 hover:bg-indigo-950 text-indigo-100 font-bold rounded-sm shadow transition-all hover:scale-105"
-            title="여러 문학 기계를 하나로 연결하는 교차 파이프라인 모드"
+            className="px-3 py-1.5 rounded-sm bg-amber-100 text-amber-900 border border-amber-300 font-bold flex items-center gap-1 hover:bg-amber-200 transition-colors"
           >
-            <Network className="w-3.5 h-3.5 text-indigo-300" />
-            기계 교차 파이프라인
+            <Network className="w-3.5 h-3.5" />
+            <span>시너지 파이프라인</span>
           </button>
 
-          {/* Artifact Exporter Button */}
           <button
             onClick={onOpenExporterModal}
-            className="flex items-center gap-1 px-3 py-1.5 bg-amber-900 hover:bg-amber-950 text-amber-100 font-bold rounded-sm shadow transition-all hover:scale-105"
-            title="작성된 문학 결과물을 사이버네틱 판화/원고로 내보내기"
+            className="px-3 py-1.5 rounded-sm bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold flex items-center gap-1 hover:bg-emerald-200 transition-colors"
           >
-            <Download className="w-3.5 h-3.5 text-amber-300" />
-            원고 내보내기
+            <Download className="w-3.5 h-3.5" />
+            <span>아티팩트 내보내기</span>
           </button>
 
-          {/* Version Switcher Selector */}
-          <select
-            value={version}
-            onChange={(e) => onSelectVersion(e.target.value as 'v1' | 'v2' | 'v3')}
-            className="px-2 py-1 bg-stone-200 text-stone-900 font-bold rounded border border-stone-400 focus:outline-none cursor-pointer"
-          >
-            <option value="v3">V3 (Cybernetic Mode)</option>
-            <option value="v2">V2 (Reference Exact)</option>
-            <option value="v1">V1 (Classic Mode)</option>
-          </select>
-
-          {/* API Key Modal Button */}
           <button
             onClick={onOpenApiKeyModal}
-            className={`flex items-center gap-1 px-3 py-1.5 font-bold rounded-sm uppercase ${
+            className={`px-3 py-1.5 rounded-sm font-mono font-bold border transition-colors flex items-center gap-1.5 ${
               hasApiKey
-                ? 'bg-emerald-900 text-emerald-100 border border-emerald-950'
-                : 'bg-red-800 text-white border border-red-950 animate-pulse'
+                ? 'bg-emerald-950 text-emerald-200 border-emerald-700 hover:bg-emerald-900'
+                : 'bg-stone-900 text-stone-100 border-stone-900 hover:bg-red-900'
             }`}
           >
             <Key className="w-3.5 h-3.5" />
-            {hasApiKey ? 'GEMINI_CONNECTED' : 'SET_API_KEY'}
-            <Sparkles className="w-3 h-3 text-amber-300" />
+            <span>{hasApiKey ? 'KEY 설정됨' : 'Google API Key'}</span>
           </button>
-
         </div>
       </div>
     </header>

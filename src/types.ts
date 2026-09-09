@@ -1,3 +1,5 @@
+export type AppVersion = 'v1' | 'v2' | 'v3' | 'v4';
+
 export type EpochCategory = 'REDUCTION' | 'AUTOMATION' | 'DISCOVERY_RESISTANCE';
 
 export interface EpochInfo {
