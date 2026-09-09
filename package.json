@@ -1,9 +1,9 @@
 {
-  "name": "aphorism-synthesizer",
+  "name": "the-museum-of-literary-machines",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://gdone9009.github.io/aphorism-synthesizer",
+  "homepage": "https://gdone9009.github.io/the-museum-of-literary-machines",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
